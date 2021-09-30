@@ -12,12 +12,18 @@ const App = () => {
 
   const [ newNumber, setNewNumber ] = useState('')
 
+  const [ newFilter, setNewFilter ] = useState('')
+
   const handleNameChange = (event) => {
     setNewName(event.target.value)
   }
 
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
+  }
+
+  const handleFilterChange = (event) => {
+    setNewFilter(event.target.value)
   }
 
   const addName = (event) => {
@@ -44,12 +50,24 @@ const App = () => {
     console.log('button clicked', event.target)
   }
 
+  const filter = (event) => {
+    event.preventDefault()
+    const filterVal = newFilter
+
+    for(let i = 0; i < persons.length; i++) {
+      if(persons[i].name.includes(filterVal)) {
+        // do something
+      }
+    }
+
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
       <form onSubmit={addName}>
         <div>
-          filter shown with <input />
+          filter shown with <input value={newFilter} onChange={handleFilterChange}/>
         </div>
         <div>
           <h2>add a new</h2>
