@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import Info from './components/Info'
+import Persons from './components/Persons'
+import Filter from './components/Filter'
 
 const App = () => {
   const [ persons, setPersons ] = useState([
@@ -26,6 +27,7 @@ const App = () => {
     setNewFilter(event.target.value)
   }
 
+  console.log(newFilter)
   const addName = (event) => {
     event.preventDefault()
     const nameObject = {
@@ -42,33 +44,19 @@ const App = () => {
         match = true;
       }
     }
+
     if (!match) {
       setPersons(persons.concat(nameObject))
       setNewName('')
       setNewNumber('')
     }
-    console.log('button clicked', event.target)
-  }
-
-  const filter = (event) => {
-    event.preventDefault()
-    const filterVal = newFilter
-
-    for(let i = 0; i < persons.length; i++) {
-      if(persons[i].name.includes(filterVal)) {
-        // do something
-      }
-    }
-
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Filter newFilter={newFilter} handleFilterChange={handleFilterChange} />
       <form onSubmit={addName}>
-        <div>
-          filter shown with <input value={newFilter} onChange={handleFilterChange}/>
-        </div>
         <div>
           <h2>add a new</h2>
         </div>
@@ -84,8 +72,8 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <div>
-        {persons.map(person =>
-          <Info key={person.id} name={person.name} number={person.number}/>
+        {persons.filter(person => person.name.toUpperCase().includes(newFilter.toUpperCase())).map(person =>
+          <Persons key={person.id} name={person.name} number={person.number}/>
           )}
       </div>
     </div>
