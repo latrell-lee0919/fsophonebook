@@ -44,9 +44,21 @@ const App = () => {
 
     for(let i = 0; i < persons.length; i++) {
       if (persons[i].name === nameObject.name) {
-        window.alert(`${newName} is already added to phonebook`)
+        window.alert(`${newName} is already added to phonebook, replace the old number with a new one?`)
         match = true;
       }
+    }
+
+    if(match) {
+      const person = persons.find(p => p.name === nameObject.name);
+      const id = person.id
+      console.log(person)
+      const newEntry = {...person, number: newNumber}
+      entryService
+      .update(person.id, newEntry)
+      .then(returnedEntry => {
+        setPersons(persons.map(person => person.id !== id ? person : returnedEntry))
+      })
     }
 
     if (!match) {
@@ -59,6 +71,8 @@ const App = () => {
       })
     }
   }
+
+
 
   const removePerson = (id) => {
     const person = persons.find(p => p.id === id)
