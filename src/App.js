@@ -60,6 +60,19 @@ const App = () => {
     }
   }
 
+  const removePerson = (id) => {
+    const person = persons.find(p => p.id === id)
+    if(window.confirm(`Delete ${person.name}?`)) {
+      console.log(`removing ${person.name}`)
+      entryService
+      .remove(id)
+      .then(remainingEntries => {
+        return entryService.getAll()
+      })
+      .then(remainingEntries => setPersons(remainingEntries))
+    }
+}
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -73,7 +86,12 @@ const App = () => {
       <h2>Numbers</h2>
       <div>
         {persons.filter(person => person.name.toUpperCase().includes(newFilter.toUpperCase())).map(person =>
-          <Persons key={person.id} name={person.name} number={person.number}/>
+          <Persons 
+          key={person.id} 
+          name={person.name} 
+          number={person.number}
+          removePerson={() => removePerson(person.id)}
+          />
           )}
       </div>
     </div>
